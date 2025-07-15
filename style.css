@@ -1,0 +1,74 @@
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f7f9fa;
+    color: #222;
+    margin: 0;
+    padding: 0;
+}
+header {
+    background: #2d6cdf;
+    color: #fff;
+    padding: 1.5rem 0 1rem 0;
+    text-align: center;
+}
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+nav a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+nav a:hover {
+    color: #ffd700;
+}
+main {
+    max-width: 900px;
+    margin: 2rem auto;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    padding: 2rem;
+}
+section {
+    margin-bottom: 2.5rem;
+}
+h2 {
+    color: #2d6cdf;
+    margin-top: 0;
+}
+footer {
+    text-align: center;
+    padding: 1rem;
+    background: #eaeaea;
+    color: #555;
+    font-size: 0.95rem;
+    border-top: 1px solid #ddd;
+}
+code, pre {
+    background: #f4f4f4;
+    border-radius: 4px;
+    padding: 0.2em 0.5em;
+    font-family: 'Fira Mono', 'Consolas', monospace;
+    font-size: 1em;
+}
+.example {
+    background: #eaf3ff;
+    border-left: 4px solid #2d6cdf;
+    padding: 1em;
+    margin: 1em 0;
+    border-radius: 6px;
+}
+.tip {
+    background: #fffbe6;
+    border-left: 4px solid #ffd700;
+    padding: 1em;
+    margin: 1em 0;
+    border-radius: 6px;
+}

@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C++ Lab Resource & Solution Hub</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>C++ Lab Resource & Solution Hub</h1>
+        <nav>
+            <ul>
+                <li><a href="#concepts">C++ Concepts</a></li>
+                <li><a href="#week10">Week 10 Lab Solutions</a></li>
+                <li><a href="#week15">Week 15 Lab Solutions</a></li>
+                <li><a href="#examples">Example Programs</a></li>
+                <li><a href="#tricks">Memory Tricks & Tips</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section id="concepts">
+            <h2>C++ Concepts</h2>
+            <p>Below are the most important C++ concepts from your course notes, explained with examples and tricks to remember them easily.</p>
+
+            <h3>Procedural vs Object-Oriented Programming</h3>
+            <div class="example">
+                <strong>Explanation:</strong> Procedural programming uses functions and variables. Object-oriented programming (OOP) uses classes and objects to bundle data and functions together.
+                <pre><code>// Procedural style
+int add(int a, int b) { return a + b; }
+int main() {
+    int x = add(2, 3);
+    return 0;
+}
+
+// OOP style
+class Adder {
+public:
+    int add(int a, int b) { return a + b; }
+};
+int main() {
+    Adder ad;
+    int x = ad.add(2, 3);
+    return 0;
+}
+</code></pre>
+                <strong>Trick:</strong> OOP = "blueprint" (class) + "house" (object).
+            </div>
+
+            <h3>Class, Object, Attributes, Methods</h3>
+            <div class="example">
+                <strong>Explanation:</strong> A class is a template. An object is an instance of a class. Attributes are variables; methods are functions inside the class.
+                <pre><code>class Insect {
+public:
+    int legs;
+    void crawl() { /* ... */ }
+};
+Insect mosquito;
+mosquito.legs = 6;
+mosquito.crawl();
+</code></pre>
+                <strong>Trick:</strong> "Class = plan, Object = product".
+            </div>
+
+            <h3>Encapsulation, Data Hiding, Abstraction</h3>
+            <div class="example">
+                <strong>Explanation:</strong> Encapsulation keeps data safe inside a class. Data hiding uses private members. Abstraction hides details from the user.
+                <pre><code>class BankAccount {
+private:
+    double balance;
+public:
+    void deposit(double amount) { balance += amount; }
+    double getBalance() const { return balance; }
+};
+BankAccount acc;
+acc.deposit(100);
+cout << acc.getBalance();
+</code></pre>
+                <strong>Trick:</strong> "Private" = hidden, "Public" = visible.
+            </div>
+
+            <h3>Access Specifiers</h3>
+            <div class="example">
+                <strong>Explanation:</strong> <code>public</code> members are accessible outside the class; <code>private</code> members are only accessible inside the class.
+                <pre><code>class Demo {
+private:
+    int secret;
+public:
+    void setSecret(int s) { secret = s; }
+    int getSecret() const { return secret; }
+};
+Demo d;
+d.setSecret(42);
+cout << d.getSecret();
+</code></pre>
+                <strong>Trick:</strong> "Private" = "Keep it secret!" Only the class can see it.
+            </div>
+
+            <h3>Constructors & Destructors</h3>
+            <div class="example">
+                <strong>Explanation:</strong> Constructors set up objects. Destructors clean up when objects are destroyed.
+                <pre><code>class Rectangle {
+public:
+    Rectangle(double w = 0, double l = 0) { /* ... */ }
+    ~Rectangle() { /* ... */ }
+};
+Rectangle r1; // default constructor
+Rectangle r2(5, 10); // parameterized constructor
+</code></pre>
+                <strong>Trick:</strong> Constructor = "build"; Destructor = "destroy".
+            </div>
+
+            <h3>Inline Member Functions</h3>
+            <div class="example">
+                <strong>Explanation:</strong> Inline functions are defined inside the class. They are fast for short code.
+                <pre><code>class Rectangle {
+    double getWidth() const { return width; }
+};
+</code></pre>
+                <strong>Trick:</strong> Inline = "fast, but bigger code". Use for short functions.
+            </div>
+
+            <h3>Separating Specification from Implementation</h3>
+            <div class="example">
+                <strong>Explanation:</strong> Put class declaration in a header file (.h). Put function definitions in a .cpp file.
+                <pre><code>// Rectangle.h
+class Rectangle {
+    double width, length;
+public:
+    Rectangle(double w = 0, double l = 0);
+    double getArea() const;
+};
+// Rectangle.cpp
+#include "Rectangle.h"
+Rectangle::Rectangle(double w, double l) : width(w), length(l) {}
+double Rectangle::getArea() const { return width * length; }
+</code></pre>
+                <strong>Trick:</strong> "Header = what, CPP = how".
+            </div>
+
+            <h3>Static Members</h3>
+            <div class="example">
+                <strong>Explanation:</strong> Static members are shared by all objects. Use for counting objects or shared settings.
+                <pre><code>class Tree {
+    static int objectCount;
+public:
+    Tree() { objectCount++; }
+    static int getObjectCount() { return objectCount; }
+};
+int Tree::objectCount = 0;
+Tree t1, t2, t3;
+cout << Tree::getObjectCount(); // 3
+</code></pre>
+                <strong>Trick:</strong> "Static" = "shared by all". Only one copy exists.
+            </div>
+
+            <h3>Friends</h3>
+            <div class="example">
+                <strong>Explanation:</strong> Friend functions can access private members. Use for special access.
+                <pre><code>class MyClass {
+    friend void showSecret(MyClass &obj);
+private:
+    int secret;
+public:
+    MyClass(int s) : secret(s) {}
+};
+void showSecret(MyClass &obj) {
+    cout << obj.secret;
+}
+MyClass m(42);
+showSecret(m); // 42
+</code></pre>
+                <strong>Trick:</strong> "Friend" = "VIP access" to private stuff.
+            </div>
+
+            <h3>Operator Overloading</h3>
+            <div class="example">
+                <strong>Explanation:</strong> Operator overloading lets you use +, ==, etc. with your own classes.
+                <pre><code>class FeetInches {
+    int feet, inches;
+public:
+    FeetInches(int f, int i) : feet(f), inches(i) {}
+    bool operator==(const FeetInches& rhs) const {
+        return feet == rhs.feet && inches == rhs.inches;
+    }
+};
+FeetInches a(5, 8), b(5, 8);
+cout << (a == b); // 1 (true)
+</code></pre>
+                <strong>Trick:</strong> "operator+" means you can use <code>object1 + object2</code> just like numbers!
+            </div>
+
+            <h3>Copy Constructors</h3>
+            <div class="example">
+                <strong>Explanation:</strong> Copy constructors make a new object as a copy of another. Needed for classes with pointers.
+                <pre><code>class SomeClass {
+    int *value;
+public:
+    SomeClass(int val = 0) {
+        value = new int; *value = val;
+    }
+    SomeClass(const SomeClass &obj) {
+        value = new int; *value = *(obj.value);
+    }
+};
+SomeClass a(5);
+SomeClass b = a; // b is a copy of a
+</code></pre>
+                <strong>Trick:</strong> If your class uses <code>new</code>, always write a copy constructor!
+            </div>
+
+            <h3>Object Conversion</h3>
+            <div class="example">
+                <strong>Explanation:</strong> You can define how your class converts to another type.
+                <pre><code>class FeetInches {
+    int feet, inches;
+public:
+    operator int() { return feet; }
+};
+FeetInches distance(5, 8);
+int d = distance; // d = 5
+</code></pre>
+                <strong>Trick:</strong> "operator type()" lets you use your object as that type!
+            </div>
+
+            <h3>Aggregation</h3>
+            <div class="example">
+                <strong>Explanation:</strong> Aggregation means a class contains another class as a member. Like a Student has StudentInfo.
+                <pre><code>class StudentInfo {
+    string name;
+public:
+    StudentInfo(string n) : name(n) {}
+    string getName() const { return name; }
+};
+class Student {
+    StudentInfo info;
+public:
+    Student(string n) : info(n) {}
+    string getStudentName() const { return info.getName(); }
+};
+Student s("Alice");
+cout << s.getStudentName(); // Alice
+</code></pre>
+                <strong>Trick:</strong> "Has a" relationship: A Student "has a" StudentInfo.
+            </div>
+
+            <h3>Arrays of Objects</h3>
+            <div class="example">
+                <strong>Explanation:</strong> Objects can be elements of an array. Use initializer lists to set up objects.
+                <pre><code>class InventoryItem {
+    string name;
+public:
+    InventoryItem(string n) : name(n) {}
+};
+InventoryItem inventory[3] = { InventoryItem("Hammer"), InventoryItem("Wrench"), InventoryItem("Pliers") };
+cout << inventory[2].name;
+</code></pre>
+                <strong>Trick:</strong> Arrays of objects work like arrays of int, but each element is an object!
+            </div>
+
+            <h3>Static vs Instance Members</h3>
+            <div class="example">
+                <strong>Explanation:</strong> Instance variables: each object has its own copy. Static variables: shared among all objects.
+                <pre><code>class Demo {
+    static int shared;
+    int unique;
+public:
+    Demo() { unique = 0; }
+};
+</code></pre>
+                <strong>Trick:</strong> "Static = shared, Instance = unique".
+            </div>
+
+            <h3>Private Member Functions</h3>
+            <div class="example">
+                <strong>Explanation:</strong> Private member functions can only be called by other member functions. Used for internal work.
+                <pre><code>class Demo {
+private:
+    void helper() { /* ... */ }
+public:
+    void doWork() { helper(); }
+};
+</code></pre>
+                <strong>Trick:</strong> "Private = helper for class only".
+            </div>
+
+            <h3>Pointer to Object & Dynamic Allocation</h3>
+            <div class="example">
+                <strong>Explanation:</strong> You can use pointers to create objects at runtime. Use <code>new</code> to allocate, <code>delete</code> to free.
+                <pre><code>Rectangle *rPtr = new Rectangle(10, 20);
+delete rPtr;
+</code></pre>
+                <strong>Trick:</strong> Always <code>delete</code> what you <code>new</code>!
+            </div>
+
+            <h3>Overloading Constructors & Member Functions</h3>
+            <div class="example">
+                <strong>Explanation:</strong> Constructors and member functions can have the same name but different parameters.
+                <pre><code>class Demo {
+public:
+    Demo() {}
+    Demo(int x) {}
+    void show() {}
+    void show(int x) {}
+};
+</code></pre>
+                <strong>Trick:</strong> "Overload = same name, different parameters".
+            </div>
+
+            <h3>Notes on Overloaded Operators</h3>
+            <div class="example">
+                <strong>Explanation:</strong> Not all operators can be overloaded. Can't overload: <code>?: . .* :: sizeof</code>. Relational operators should return bool.
+                <pre><code>class Demo {
+public:
+    bool operator<(const Demo& rhs) const { return true; }
+};
+</code></pre>
+                <strong>Trick:</strong> "Not everything can be overloaded!".
+            </div>
+
+            <h3>Overloaded [] Operator</h3>
+            <div class="example">
+                <strong>Explanation:</strong> Classes can act like arrays by overloading <code>[]</code>.
+                <pre><code>class MyArray {
+    int arr[10];
+public:
+    int& operator[](int i) { return arr[i]; }
+};
+MyArray a;
+a[0] = 5;
+cout << a[0];
+</code></pre>
+                <strong>Trick:</strong> "[] = array-like access".
+            </div>
+
+            <h3>Memory Management</h3>
+            <div class="example">
+                <strong>Explanation:</strong> Always release dynamic memory in the destructor to avoid memory leaks.
+                <pre><code>class Demo {
+    int* arr;
+public:
+    Demo(int size) { arr = new int[size]; }
+    ~Demo() { delete[] arr; }
+};
+</code></pre>
+                <strong>Trick:</strong> "Destructor = clean up!".
+            </div>
+        </section>
+        <section id="week10">
+            <h2>Week 10 Lab Solutions</h2>
+            <p>Step-by-step solutions to all Week 10 lab questions, with code and explanations.</p>
+            <h3>1. Circle Class</h3>
+            <div class="example">
+                <strong>Question:</strong> Write a Circle class with radius and PI, constructors, mutators, accessors, and methods for area, diameter, and circumference. Demonstrate with user input.<br>
+                <strong>Solution:</strong>
+                <pre><code>// Circle.h
+class Circle {
+    double radius;
+    static constexpr double PI = 3.14159;
+public:
+    Circle() : radius(0.0) {}
+    Circle(double r) : radius(r) {}
+    void setRadius(double r) { radius = r; }
+    double getRadius() const { return radius; }
+    double getArea() const { return PI * radius * radius; }
+    double getDiameter() const { return radius * 2; }
+    double getCircumference() const { return 2 * PI * radius; }
+};
+</code></pre>
+                <pre><code>// main.cpp
+#include <iostream>
+#include "Circle.h"
+using namespace std;
+int main() {
+    double r;
+    cout << "Enter radius: ";
+    cin >> r;
+    Circle c(r);
+    cout << "Area: " << c.getArea() << endl;
+    cout << "Diameter: " << c.getDiameter() << endl;
+    cout << "Circumference: " << c.getCircumference() << endl;
+    return 0;
+}
+</code></pre>
+            </div>
+            <div class="tip"><strong>Trick:</strong> Area = PI * r * r, Diameter = 2 * r, Circumference = 2 * PI * r.</div>
+            <h3>2. Car Class</h3>
+            <div class="example">
+                <strong>Question:</strong> Write a Car class with yearModel, make, speed, constructors, accessors, accelerate (+5), brake (-5). Demonstrate speed changes.<br>
+                <strong>Solution:</strong>
+                <pre><code>class Car {
+    int yearModel;
+    string make;
+    int speed;
+public:
+    Car(int y, string m) : yearModel(y), make(m), speed(0) {}
+    int getYearModel() const { return yearModel; }
+    string getMake() const { return make; }
+    int getSpeed() const { return speed; }
+    void accelerate() { speed += 5; }
+    void brake() { speed -= 5; }
+};
+</code></pre>
+                <pre><code>// main.cpp
+Car myCar(2020, "Toyota");
+cout << "Speed: " << myCar.getSpeed() << endl;
+myCar.accelerate();
+cout << "Speed after accelerate: " << myCar.getSpeed() << endl;
+myCar.brake();
+cout << "Speed after brake: " << myCar.getSpeed() << endl;
+</code></pre>
+            </div>
+            <div class="tip"><strong>Trick:</strong> Accelerate = +5, Brake = -5.</div>
+            <h3>3. PayRoll Class</h3>
+            <div class="example">
+                <strong>Question:</strong> Write a PayRoll class for hourly pay, hours worked, total pay. Array of 7 employees, input hours, display gross pay. Validate hours <= 60.<br>
+                <strong>Solution:</strong>
+                <pre><code>class PayRoll {
+    double hourlyRate, hoursWorked, totalPay;
+public:
+    PayRoll(double rate = 0) : hourlyRate(rate), hoursWorked(0), totalPay(0) {}
+    void setHoursWorked(double h) { hoursWorked = (h > 60 ? 60 : h); }
+    void calculatePay() { totalPay = hourlyRate * hoursWorked; }
+    double getTotalPay() const { return totalPay; }
+};
+</code></pre>
+                <pre><code>// main.cpp
+PayRoll employees[7];
+for (int i = 0; i < 7; ++i) {
+    double hours;
+    cout << "Enter hours for employee " << i+1 << ": ";
+    cin >> hours;
+    employees[i].setHoursWorked(hours);
+    employees[i].calculatePay();
+    cout << "Gross pay: " << employees[i].getTotalPay() << endl;
+}
+</code></pre>
+            </div>
+            <div class="tip"><strong>Trick:</strong> Never accept hours > 60.</div>
+            <h3>4. BankAccount Class</h3>
+            <div class="example">
+                <strong>Question:</strong> Write a BankAccount class with name, account number, type, balance, interest rate, static account number, array of 10 accounts.<br>
+                <strong>Solution:</strong>
+                <pre><code>class BankAccount {
+    static int nextAccountNumber;
+    int accountNumber;
+    string name, type;
+    double balance, interestRate;
+public:
+    BankAccount(string n, string t, double b, double ir)
+        : name(n), type(t), balance(b), interestRate(ir) {
+        accountNumber = ++nextAccountNumber;
+    }
+    // ...accessors/mutators...
+};
+int BankAccount::nextAccountNumber = 1000;
+</code></pre>
+                <pre><code>// main.cpp
+BankAccount accounts[10] = {
+    BankAccount("Alice", "Checking", 1000, 0.02),
+    // ... up to 10 ...
+};
+</code></pre>
+            </div>
+            <div class="tip"><strong>Trick:</strong> Use static for auto-increment account numbers.</div>
+            <h3>5. Dynamic Array Class</h3>
+            <div class="example">
+                <strong>Question:</strong> Write a class with a dynamic array of floats, constructor allocates, destructor frees, store/retrieve functions.<br>
+                <strong>Solution:</strong>
+                <pre><code>class FloatArray {
+    float* arr;
+    int size;
+public:
+    FloatArray(int s) : size(s) { arr = new float[size]; }
+    ~FloatArray() { delete[] arr; }
+    void set(int i, float v) { if (i >= 0 && i < size) arr[i] = v; }
+    float get(int i) const { return (i >= 0 && i < size) ? arr[i] : 0; }
+};
+</code></pre>
+                <pre><code>// main.cpp
+FloatArray fa(5);
+fa.set(0, 1.23);
+cout << fa.get(0);
+</code></pre>
+            </div>
+            <div class="tip"><strong>Trick:</strong> Always free memory in destructor!</div>
+        </section>
+        <section id="week15">
+            <h2>Week 15 Lab Solutions</h2>
+            <p>Step-by-step solutions to all Week 15 lab questions, with code and explanations.</p>
+            <h3>1. Time Class with Operator Overloading</h3>
+            <div class="example">
+                <strong>Question:</strong> Create a time class with hours, minutes, seconds, constructors, display, and overloaded + operator.<br>
+                <strong>Solution:</strong>
+                <pre><code>class Time {
+    int hours, minutes, seconds;
+public:
+    Time() : hours(0), minutes(0), seconds(0) {}
+    Time(int h, int m, int s) : hours(h), minutes(m), seconds(s) {}
+    void display() const {
+        cout << hours << ":" << minutes << ":" << seconds << endl;
+    }
+    Time operator+(const Time& t) const {
+        int s = seconds + t.seconds;
+        int m = minutes + t.minutes + s / 60;
+        int h = hours + t.hours + m / 60;
+        return Time(h % 24, m % 60, s % 60);
+    }
+};
+</code></pre>
+                <pre><code>// main.cpp
+Time t1(11, 59, 59), t2(2, 30, 30);
+Time t3 = t1 + t2;
+t3.display();
+</code></pre>
+            </div>
+            <div class="tip"><strong>Trick:</strong> Overload + for easy addition of time objects.</div>
+            <h3>2. FeetInches Operator Overloading</h3>
+            <div class="example">
+                <strong>Question:</strong> Overload <=, >=, != for FeetInches class. Demonstrate in a program.<br>
+                <strong>Solution:</strong>
+                <pre><code>class FeetInches {
+    int feet, inches;
+public:
+    // ...constructors...
+    bool operator<=(const FeetInches& rhs) const {
+        return (feet < rhs.feet) || (feet == rhs.feet && inches <= rhs.inches);
+    }
+    bool operator>=(const FeetInches& rhs) const {
+        return (feet > rhs.feet) || (feet == rhs.feet && inches >= rhs.inches);
+    }
+    bool operator!=(const FeetInches& rhs) const {
+        return feet != rhs.feet || inches != rhs.inches;
+    }
+};
+</code></pre>
+            </div>
+            <div class="tip"><strong>Trick:</strong> Compare feet first, then inches.</div>
+            <h3>3. FeetInches Copy Constructor & Multiply</h3>
+            <div class="example">
+                <strong>Question:</strong> Add a copy constructor and multiply function to FeetInches.<br>
+                <strong>Solution:</strong>
+                <pre><code>class FeetInches {
+    int feet, inches;
+public:
+    FeetInches(const FeetInches& obj) : feet(obj.feet), inches(obj.inches) {}
+    FeetInches multiply(const FeetInches& rhs) const {
+        return FeetInches(feet * rhs.feet, inches * rhs.inches);
+    }
+};
+</code></pre>
+            </div>
+            <div class="tip"><strong>Trick:</strong> Copy constructor = clone; multiply = multiply attributes.</div>
+            <h3>4. LandTract Class (Aggregation)</h3>
+            <div class="example">
+                <strong>Question:</strong> LandTract class with two FeetInches objects for length and width, area function, compare two tracts.<br>
+                <strong>Solution:</strong>
+                <pre><code>class LandTract {
+    FeetInches length, width;
+public:
+    LandTract(const FeetInches& l, const FeetInches& w) : length(l), width(w) {}
+    int getArea() const {
+        return (length.operator int()) * (width.operator int());
+    }
+    bool isEqual(const LandTract& other) const {
+        return getArea() == other.getArea();
+    }
+};
+</code></pre>
+                <pre><code>// main.cpp
+FeetInches l1(10, 0), w1(5, 0), l2(10, 0), w2(5, 0);
+LandTract t1(l1, w1), t2(l2, w2);
+cout << "Area 1: " << t1.getArea() << endl;
+cout << "Area 2: " << t2.getArea() << endl;
+cout << (t1.isEqual(t2) ? "Equal size" : "Not equal") << endl;
+</code></pre>
+            </div>
+            <div class="tip"><strong>Trick:</strong> Use aggregation for "has a" relationship.
+            </div>
+        </section>
+        <section id="examples">
+            <h2>Example Programs</h2>
+            <p>Useful sample programs from your resources, annotated for easy understanding.</p>
+            <h3>Encapsulation (Rectangle Class)</h3>
+            <div class="example">
+                <strong>Simple Explanation:</strong> Encapsulation means keeping your data safe inside a class. Only the class can change its own data. This prevents mistakes and makes your code easier to fix.
+                <pre><code>// Good: Encapsulated
+class Rectangle {
+private:
+    double width, length;
+public:
+    void setWidth(double w) { width = w; }
+    void setLength(double l) { length = l; }
+    double getArea() const { return width * length; }
+};
+Rectangle r;
+r.setWidth(5);
+r.setLength(10);
+cout << r.getArea(); // 50
+
+// Bad: No encapsulation
+class BadRectangle {
+public:
+    double width, length;
+};
+BadRectangle r;
+r.width = -5; // Oops! Negative width allowed
+</code></pre>
+                <strong>Why use it?</strong> It stops wrong values and makes your code safer.
+                <strong>What if you don't?</strong> Anyone can set bad values, causing bugs.
+            </div>
+            <h3>Static Members (Tree Class)</h3>
+            <div class="example">
+                <strong>Simple Explanation:</strong> Static means "shared by all." If you want to count how many objects you made, use static.
+                <pre><code>// Good: Static member
+class Tree {
+    static int objectCount;
+public:
+    Tree() { objectCount++; }
+    static int getObjectCount() { return objectCount; }
+};
+int Tree::objectCount = 0;
+Tree t1, t2, t3;
+cout << Tree::getObjectCount(); // 3
+
+// Bad: No static
+class BadTree {
+public:
+    int objectCount;
+    BadTree() { objectCount++; }
+};
+BadTree t1, t2, t3;
+cout << t1.objectCount; // 1 (not shared)
+</code></pre>
+                <strong>Why use it?</strong> To share data between all objects.
+                <strong>What if you don't?</strong> Each object has its own copy, so you can't count all objects.
+            </div>
+            <h3>Friend Functions</h3>
+            <div class="example">
+                <strong>Simple Explanation:</strong> A friend function is like a VIP guest. It can see private stuff in your class. Use it for special cases.
+                <pre><code>// Good: Friend function
+class MyClass {
+    friend void showSecret(MyClass &obj);
+private:
+    int secret;
+public:
+    MyClass(int s) : secret(s) {}
+};
+void showSecret(MyClass &obj) {
+    cout << obj.secret;
+}
+MyClass m(42);
+showSecret(m); // 42
+
+// Bad: No friend
+class NoFriendClass {
+private:
+    int secret;
+public:
+    NoFriendClass(int s) : secret(s) {}
+    int getSecret() const { return secret; }
+};
+NoFriendClass m(42);
+cout << m.getSecret(); // 42
+</code></pre>
+                <strong>Why use it?</strong> For special access, like debugging or operator overloading.
+                <strong>What if you don't?</strong> You must make public functions for outside access.
+            </div>
+            <h3>Operator Overloading</h3>
+            <div class="example">
+                <strong>Simple Explanation:</strong> Operator overloading lets you use +, ==, etc. with your own classes. It makes your code look like math.
+                <pre><code>// Good: Operator overloading
+class FeetInches {
+    int feet, inches;
+public:
+    FeetInches(int f, int i) : feet(f), inches(i) {}
+    bool operator==(const FeetInches& rhs) const {
+        return feet == rhs.feet && inches == rhs.inches;
+    }
+};
+FeetInches a(5, 8), b(5, 8);
+cout << (a == b); // 1 (true)
+
+// Bad: No operator overloading
+class NoOpFeetInches {
+    int feet, inches;
+public:
+    NoOpFeetInches(int f, int i) : feet(f), inches(i) {}
+    bool isEqual(const NoOpFeetInches& rhs) const {
+        return feet == rhs.feet && inches == rhs.inches;
+    }
+};
+NoOpFeetInches a(5, 8), b(5, 8);
+cout << a.isEqual(b); // 1 (true)
+</code></pre>
+                <strong>Why use it?</strong> Code is easier to read and use.
+                <strong>What if you don't?</strong> You must call functions instead of using operators.
+            </div>
+            <h3>Dynamic Arrays</h3>
+            <div class="example">
+                <strong>Simple Explanation:</strong> Dynamic arrays let you choose the size at runtime. Use them when you don't know the size in advance.
+                <pre><code>// Good: Dynamic array
+class FloatArray {
+    float* arr;
+    int size;
+public:
+    FloatArray(int s) : size(s) { arr = new float[size]; }
+    ~FloatArray() { delete[] arr; }
+    void set(int i, float v) { if (i >= 0 && i < size) arr[i] = v; }
+    float get(int i) const { return (i >= 0 && i < size) ? arr[i] : 0; }
+};
+FloatArray fa(3);
+fa.set(0, 1.1);
+fa.set(1, 2.2);
+fa.set(2, 3.3);
+cout << fa.get(1); // 2.2
+
+// Bad: Fixed array
+float arr[3]; // Size fixed at compile time
+</code></pre>
+                <strong>Why use it?</strong> Flexible size, memory used only when needed.
+                <strong>What if you don't?</strong> You can't change the size after compiling.
+            </div>
+            <h3>Aggregation</h3>
+            <div class="example">
+                <strong>Simple Explanation:</strong> Aggregation means one class has another class inside it. Like a Student has StudentInfo.
+                <pre><code>// Good: Aggregation
+class StudentInfo {
+    string name;
+public:
+    StudentInfo(string n) : name(n) {}
+    string getName() const { return name; }
+};
+class Student {
+    StudentInfo info;
+public:
+    Student(string n) : info(n) {}
+    string getStudentName() const { return info.getName(); }
+};
+Student s("Alice");
+cout << s.getStudentName(); // Alice
+
+// Bad: No aggregation
+class BadStudent {
+    string name;
+public:
+    BadStudent(string n) : name(n) {}
+    string getName() const { return name; }
+};
+BadStudent s("Alice");
+cout << s.getName(); // Alice
+</code></pre>
+                <strong>Why use it?</strong> Code is easier to reuse and change.
+                <strong>What if you don't?</strong> You must copy code everywhere, which is hard to fix later.
+            </div>
+        </section>
+        <section id="tricks">
+            <h2>Memory Tricks & Tips</h2>
+            <p>Quick tricks and mnemonics to help you remember C++ concepts and solve lab questions easily.</p>
+            <ul>
+                <li><strong>Class vs Object:</strong> Class = blueprint, Object = house built from blueprint.</li>
+                <li><strong>Encapsulation:</strong> "Keep your data safe!" Use private members.</li>
+                <li><strong>Constructor:</strong> "Build the object." Destructor: "Clean up after!"</li>
+                <li><strong>Static:</strong> "Shared by all objects." Instance: "Unique to each object."</li>
+                <li><strong>Friend:</strong> "VIP access to private stuff."</li>
+                <li><strong>Operator Overloading:</strong> "Make your objects act like numbers!"</li>
+                <li><strong>Copy Constructor:</strong> "Clone your object safely, especially with pointers."</li>
+                <li><strong>Dynamic Memory:</strong> Always <code>delete</code> what you <code>new</code>!</li>
+                <li><strong>Array of Objects:</strong> Like array of int, but each element is an object.</li>
+                <li><strong>Aggregation:</strong> "Has a" relationship: Student has StudentInfo.</li>
+                <li><strong>Access Specifiers:</strong> "Public = open, Private = secret."</li>
+                <li><strong>Inline Functions:</strong> "Fast, but bigger code. Use for short methods."</li>
+                <li><strong>Lab Trick:</strong> For area, always multiply length * width. For payroll, never accept hours > 60.</li>
+            </ul>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 C++ Lab Resource Hub</p>
+    </footer>
+</body>
+</html>
